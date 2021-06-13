@@ -4,6 +4,10 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
 ///////////////////////////////////////
+const renderError = function (message) {
+  countriesContainer.insertAdjacentText('beforeend', message);
+  countriesContainer.style.opacity = 1;
+};
 const renderCountry = function (data, className = '') {
   const html = `
 <article class="country ${className}">
@@ -20,6 +24,42 @@ const renderCountry = function (data, className = '') {
   countriesContainer.insertAdjacentHTML('beforeend', html);
   countriesContainer.style.opacity = 1;
 };
+
+////////// Khatarnaak New Method!!!! /////////////
+
+const getCountry = function (country) {
+  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+    .then(response => {
+      console.log(response);
+      if (!response.ok) renderError('country not found');
+      return response.json();
+    })
+    .then(data => {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders[0];
+      if (!neighbour) return;
+      return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbour}`);
+    })
+    .then(response => {
+      console.log(response);
+      if (!response.ok) renderError('country not found');
+      return response.json();
+    })
+    .then(data => renderCountry(data, 'neighbour'))
+    .catch(err => {
+      console.error(`${err} 😢😢😢😢`);
+      renderError('Something Wnt Wrong');
+    })
+    .finally(() => {
+      countriesContainer.style.opacity = 1;
+    });
+};
+
+btn.addEventListener('click', function () {
+  getCountry('hiuhguyggguyg');
+});
+
+//////////////optional Mthod call
 // const getcountry = function (country) {
 //   const request = new XMLHttpRequest();
 //   request.open('GET', `https://restcountries.eu/rest/v2/name/${country}`);
@@ -47,20 +87,3 @@ const renderCountry = function (data, className = '') {
 
 // const xd = fetch('https://restcountries.eu/rest/v2/name/pakistan');
 // console.log(xd);
-
-////////// Khatarnaak New Method!!!! /////////////
-
-const getCountry = function (country) {
-  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
-    .then(response => response.json())
-    .then(data => {
-      renderCountry(data[0]);
-      const neighbour = data[0].borders[0];
-      if (!neighbour) return;
-      return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbour}`);
-    })
-    .then(response => response.json())
-    .then(data => renderCountry(data, 'neighbour'));
-};
-
-getCountry('usa');
