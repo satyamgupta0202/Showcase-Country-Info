@@ -30,7 +30,7 @@ const renderCountry = function (data, className = '') {
 const getCountry = function (country) {
   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
     .then(response => {
-      console.log(response);
+      // console.log(response);
       if (!response.ok) renderError('country not found');
       return response.json();
     })
@@ -41,7 +41,7 @@ const getCountry = function (country) {
       return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbour}`);
     })
     .then(response => {
-      console.log(response);
+      // console.log(response);
       if (!response.ok) renderError('country not found');
       return response.json();
     })
@@ -58,6 +58,49 @@ const getCountry = function (country) {
 btn.addEventListener('click', function () {
   getCountry('hiuhguyggguyg');
 });
+
+////challenge!!!!!!!!!!!!!!!!!!!!
+
+const latlong = function (lat, long) {
+  fetch(`https://geocode.xyz/${lat},${long}?geoit=json`)
+    .then(response => {
+      // console.log(response);
+      if (!response.ok) throw new Error('xxs');
+      return response.json();
+    })
+    .then(data => getCountry(data.country))
+    .catch(err => console.error(`${err} found Try again!!!!`))
+    .finally('XXD');
+};
+latlong(52.508, 13.381);
+
+///////////coding challenge 2;
+// const imgContainer = document.querySelector('.images');
+// const displayPic = new Promise(function (resolve, reject) {
+//   setTimeout(function () {
+//     console.log('Waiting for 2 seconds');
+//     var img = document.createElement('img');
+//     img.src = 'img/img-1.jpg';
+//     //document.getElementById('body').appendChild(img);
+//     img.addEventListener('load', function () {
+//       imgContainer.append(img);
+//       resolve(img);
+//     });
+//     img.addEventListener('error', function () {
+//       reject(new Error('fhfhfh'));
+//     });
+//   }, 2000);
+// });
+//wait function
+
+// const k = await wait();
+
+// const wait = new (async function (seconds) {
+//   return new Promise(function(resolve){
+//     setTimeout((resolve,seconds*1000));
+//   });
+
+//promise ,.... self -(asysnc )....api ...=>no bother......await
 
 //////////////optional Mthod call
 // const getcountry = function (country) {
