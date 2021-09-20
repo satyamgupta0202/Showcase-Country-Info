@@ -56,7 +56,7 @@ const getCountry = function (country) {
 };
 
 btn.addEventListener('click', function () {
-  getCountry('hiuhguyggguyg');
+  getCountry('portugal');
 });
 
 ////challenge!!!!!!!!!!!!!!!!!!!!
